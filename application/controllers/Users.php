@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-use \Firebase\JWT\JWT;
+
+
 
 
 require str_replace('application','',APPPATH . '/vendor/autoload.php');
@@ -126,8 +127,8 @@ else
           "email"=>$input_data['email'],
           "password"=>$input_data['password'],
           );
-        $userdata=$this->user_lib->logincheck($dataarray);
-        if($userdata=='false')
+        $token=$this->user_lib->login_check($dataarray);
+        if($token=='false')
         {
           
           return  $this->response([
@@ -138,26 +139,6 @@ else
 
         }
         
-      
-        $jwt_data = array(
-            'user_id' =>$userdata->id,
-            'email'=>$userdata->email,
-            'name'=>$userdata->username
-        );
-        $this->key=base64_decode($this->config->item('jwt_key'));
-        $data = [
-            'iat' => base64_encode(random_bytes(32)), // Issued at: time when the token was generated
-            'jti' => time(), // Json Token Id: an unique identifier for the token
-            'nbf' => time(), // Not before
-            'exp' => 60*60, // Expire
-            'data' => $jwt_data
-        ];
-       
-
-        $token=JWT::encode($data,$this->key,'HS512');
-     
-
-    
    if(!empty($token))
    {
       
@@ -177,7 +158,7 @@ else
         
     }
 
-    function userdata_get()
+    function alldata_get()
     {
         
     }
