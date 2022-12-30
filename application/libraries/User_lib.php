@@ -38,8 +38,7 @@ class User_lib{
             'email'=>$userdata->email,
             'name'=>$userdata->username
         );
-        // $key = 'example_key';
-        $this->key=base64_decode($this->config->item('jwt_key'));
+        
         $tokenId = base64_encode(random_bytes(32));
         $issuedAt = time();
         $notBefore = $issuedAt;
@@ -61,9 +60,19 @@ class User_lib{
 
     }
 
-    function verify_token()
+    function verify_token($token)
     {
+    try{
 
+    $decode=JWT::decode($token, new Key($this->key, 'HS256'));
+    return $decode->data;
+}
+catch(Exception $e)
+{
+
+    return false;
+}
+      
     }
    
 }

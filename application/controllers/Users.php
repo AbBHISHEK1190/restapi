@@ -138,17 +138,17 @@ else
             ], 404);
 
         }
+        else
+        {
+
+            $this->response([
+                'status' => true,
+                'msg'=>'successfully login',
+                'data' => $token
+            ], 200);
+        }
         
-   if(!empty($token))
-   {
-      
-      $this->response([
-          'status' => true,
-          'msg'=>'successfully login',
-          'data' => $token
-      ], 200);
-  
-   }
+ 
   
   
   }
@@ -161,5 +161,12 @@ else
     function alldata_get()
     {
         
+        $input_json = $this->input->get_request_header('Authorization');
+        $verify=$this->user_lib->verify_token($input_json);
+        
+        if($verify=='' || $verify=='false')
+         exit('Token is not valid');
+
+        print_r($verify);die;
     }
 }
