@@ -128,7 +128,7 @@ else
           "password"=>$input_data['password'],
           );
         $token=$this->user_lib->login_check($dataarray);
-        if($token=='false')
+        if($token=='false' || empty($token))
         {
           
           return  $this->response([
